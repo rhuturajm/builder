@@ -129,6 +129,11 @@ EOF
     fi
 }
 
+function _compress_cache {
+    echo "Compress image to cache"
+    gzip -c 9 < "$IMAGE" > "$IMAGE_CACHE"
+}
+
 function _open_image {
     echo "Loop-back mounting" "images/$RASPBIAN_IMAGE_FILE"
     # shellcheck disable=SC2086
@@ -239,6 +244,9 @@ RASPBIAN_TORRENT=images/$(basename $RASPBIAN_TORRENT_URL)
 echo "$RASPBIAN_TORRENT"
 IMAGE_ZIP=${RASPBIAN_TORRENT%.torrent}
 echo "$IMAGE_ZIP"
+CACHE_TORRENT=cache/$(basename $RASPBIAN_TORRENT_URL)
+IMAGE_CACHE=${CACHE_TORRENT%.torrent}
+echo "$IMAGE_CACHE"
 IMAGE=${IMAGE_ZIP%.zip}.img
 echo "$IMAGE"
 
@@ -248,6 +256,9 @@ fi
 
 _decompress_image
 _resize_image
+if [ ! -d "cache" ]; then
+    _compress_cache
+fi
 _open_image
 
 if [[ "$1" == "--chroot" ]] ; then
