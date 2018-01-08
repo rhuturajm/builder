@@ -256,7 +256,7 @@ fi
 
 _decompress_image
 _resize_image
-if [ ! -d "cache" ]; then
+if [ -d "cache" ]; then
     _compress_cache
 fi
 _open_image
