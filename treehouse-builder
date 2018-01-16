@@ -269,6 +269,8 @@ if [[ "$1" == "--chroot" ]] ; then
     _shell
 elif [[ "$1" == "--noninteractive" ]] ; then
     #_modify_image
+    ls -latr .
+    tree -I "mnt"
     echo "dogi"
 elif [[ "$1" == "--shell" ]]; then
     _shell
