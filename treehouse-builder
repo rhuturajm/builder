@@ -131,12 +131,12 @@ EOF
 
 function _compress_cache {
     echo "Compress $IMAGE to $IMAGE_CACHE"
-    gzip -c -9 < "$IMAGE" > "$IMAGE_CACHE"
+    gzip -c -9 "$IMAGE" | pv > "$IMAGE_CACHE"
 }
 
 function _decompress_cache {
     echo "Decompress $IMAGE_CACHE to $IMAGE"
-    gzip -c -d "$IMAGE_CACHE" > "$IMAGE"
+    pv "$IMAGE_CACHE" | gzip -c -d -9 > "$IMAGE"
 }
 
 function _open_image {
