@@ -130,10 +130,13 @@ EOF
 }
 
 function _compress_cache {
-    echo "Compress image to cache"
-    echo "$IMAGE"
-    echo "$IMAGE_CACHE"
+    echo "Compress $IMAGE to $IMAGE_CACHE"
     gzip -c -9 < "$IMAGE" > "$IMAGE_CACHE"
+}
+
+function _decompress_cache {
+    echo "Decompress $IMAGE_CACHE to images/"
+    gzip -c "$IMAGE_CACHE" > "$IMAGE_CACHE"
 }
 
 function _open_image {
@@ -243,24 +246,26 @@ trap exittrap 0
 trap exittrap ERR
 
 RASPBIAN_TORRENT=images/$(basename $RASPBIAN_TORRENT_URL)
-echo "$RASPBIAN_TORRENT"
 IMAGE_ZIP=${RASPBIAN_TORRENT%.torrent}
-echo "$IMAGE_ZIP"
-CACHE_TORRENT=cache/$(basename $RASPBIAN_TORRENT_URL)
-IMAGE_CACHE=${CACHE_TORRENT%.torrent}
-echo "$IMAGE_CACHE"
+IMAGE_CACHE="cache/${CACHE_TORRENT%.zip.torrent}.gz"
 IMAGE=${IMAGE_ZIP%.zip}.img
-echo "$IMAGE"
 
-if [ ! -e "$IMAGE_ZIP" ]; then
-    _get_image
-fi
+echo "RASPBIAN_TORRENT = $RASPBIAN_TORRENT"
+echo "IMAGE_ZIP = $IMAGE_ZIP"
+echo "IMAGE_CACHE = $IMAGE_CACHE"
+echo "IMAGE = $IMAGE"
 
-_decompress_image
-_resize_image
-if [ -d "cache" ]; then
+if [ ! -e "$IMAGE_CACHE"]; then
+    if [ ! -e "$IMAGE_ZIP" ]; then
+        _get_image
+    fi
+    _decompress_image
+    _resize_image
     _compress_cache
+else
+    _decompress_cache
 fi
+
 _open_image
 
 if [[ "$1" == "--chroot" ]] ; then
