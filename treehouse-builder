@@ -135,8 +135,8 @@ function _compress_cache {
 }
 
 function _decompress_cache {
-    echo "Decompress $IMAGE_CACHE to images/"
-    gzip -c -d "$IMAGE_CACHE" > "$IMAGE_CACHE"
+    echo "Decompress $IMAGE_CACHE to images/$IMAGE"
+    gzip -c -d "$IMAGE_CACHE" > "images/$IMAGE"
 }
 
 function _open_image {
