@@ -129,14 +129,25 @@ EOF
     fi
 }
 
+bell() {
+    while true; do
+        sleep 60
+        echo -e "\\a"
+    done
+}
+
 function _compress_cache {
     echo "Compress $IMAGE to $IMAGE_CACHE"
-    gzip -c -9 "$IMAGE" | pv > "$IMAGE_CACHE"
+    bell &
+    gzip -c -9 < "$IMAGE" > "$IMAGE_CACHE"
+    kill %1
 }
 
 function _decompress_cache {
     echo "Decompress $IMAGE_CACHE to $IMAGE"
-    pv "$IMAGE_CACHE" | gzip -c -d -9 > "$IMAGE"
+    bell &
+    gzip -c -d -9 "$IMAGE_CACHE" > "$IMAGE"
+    kill %1
 }
 
 function _open_image {
