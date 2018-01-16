@@ -145,9 +145,7 @@ function _compress_cache {
 
 function _decompress_cache {
     echo "Decompress $IMAGE_CACHE to $IMAGE"
-    bell &
-    gzip -c -d -9 "$IMAGE_CACHE" > "$IMAGE"
-    kill %1
+    gzip -c -d "$IMAGE_CACHE" > "$IMAGE"
 }
 
 function _open_image {
@@ -284,10 +282,7 @@ if [[ "$1" == "--chroot" ]] ; then
     echo "Starting interactive Shell in image chroot"
     _shell
 elif [[ "$1" == "--noninteractive" ]] ; then
-    #_modify_image
-    ls -latr .
-    tree -I "mnt"
-    echo "dogi"
+    _modify_image
 elif [[ "$1" == "--shell" ]]; then
     _shell
 else
