@@ -6,7 +6,7 @@ IMAGES=(
     dogi/rpi-couchdb
     portainer/portainer
     arm32v7/postgres
-    treehouses/moodle:rpi-latest
+    treehouses/moodle:rpi-0.0.1-master-c63551ce
     treehouses/rpi-couchdb:2.0.0
     treehouses/planet:rpi-latest
     treehouses/planet:rpi-db-init-latest
